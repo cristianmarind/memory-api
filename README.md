@@ -100,8 +100,8 @@ int main() {
 }
 ```
 
-Aparece un error, violacion en segmentación
-![alt tag](https://github.com/cristianmarind/memory-api/blob/master/Punto1-captura.png)
+> Aparece un error, violacion en segmentación
+> ![alt tag](https://github.com/cristianmarind/memory-api/blob/master/Punto1-captura.png)
 
 
 

@@ -118,7 +118,7 @@ int main() {
 
 4. Escriba un programa sencillo que asigne memoria usando ```malloc()``` pero olvide liberarla antes de que el programa termina. ¿Qué pasa cuando este programa se ejecuta?, ¿Puede usted usar gdb para encontrar problemas como este?, ¿Que dice acerca de Valgrind (de nuevo use este con la bandera ```--leak check=yes```)?
 
-Corriendo gdb inicialmente nos sale un mensaje de que no se encuentran simbolos de depuracion pero sin problemas de memoria, por lo contrario al correr valgrind vemos que hay un error, un memory leak (pérdida de memoria)
+> Corriendo gdb inicialmente nos sale un mensaje de que no se encuentran simbolos de depuracion pero sin problemas de memoria, por lo contrario al correr valgrind vemos que hay un error, un memory leak (pérdida de memoria)
 
 > ![alt tag](https://github.com/cristianmarind/memory-api/blob/master/Punto4.png)
 

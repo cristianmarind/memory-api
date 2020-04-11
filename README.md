@@ -114,7 +114,13 @@ int main() {
 
 > Al correr el comando ```valgrind --leak-check=yes null```, se muestra un mensaje de error y explica las posibles causas de este.En este caso se explica que enen una linea del main() se presenta un error de escritura (Invalid write of size 4) y luego explican las posibles causas ,con lo cual se podria ver que el puntero no apunta a ninguna dirección en específico. siendo un problema de asignación de memoria. 
 
+> ![alt tag](https://github.com/cristianmarind/memory-api/blob/master/Punto3-captura.png)
+
 4. Escriba un programa sencillo que asigne memoria usando ```malloc()``` pero olvide liberarla antes de que el programa termina. ¿Qué pasa cuando este programa se ejecuta?, ¿Puede usted usar gdb para encontrar problemas como este?, ¿Que dice acerca de Valgrind (de nuevo use este con la bandera ```--leak check=yes```)?
+
+Corriendo gdb inicialmente nos sale un mensaje de que no se encuentran simbolos de depuracion pero sin problemas de memoria, por lo contrario al correr valgrind vemos que hay un error, un memory leak (pérdida de memoria)
+
+> ![alt tag](https://github.com/cristianmarind/memory-api/blob/master/Punto4.png)
 
 5. Escriba un programa que cree un array de enteros llamado data de un tamaño de 100 usando ```malloc```; entonces, lleve el ```data[100]``` a ```0```. ¿Qué pasa cuando este programa se ejecuta?, ¿Qué pasa cuando se corre el programa usando ```valgrind```?, ¿El programa es correcto?
 

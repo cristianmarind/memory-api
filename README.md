@@ -122,13 +122,107 @@ int main() {
 
 > ![alt tag](https://github.com/cristianmarind/memory-api/blob/master/Punto4.png)
 
-5. Escriba un programa que cree un array de enteros llamado data de un tamaño de 100 usando ```malloc```; entonces, lleve el ```data[100]``` a ```0```. ¿Qué pasa cuando este programa se ejecuta?, ¿Qué pasa cuando se corre el programa usando ```valgrind```?, ¿El programa es correcto?
+5. Escriba un programa que cree un array de enteros llamado data de un tamaño de 100 usando ```malloc```; entonces, lleve el ```data[100]``` a ```0```., ¿El programa es correcto?
 
-6. Codifique un programa que asigne un array de enteros (como arriba), luego lo libere, y entonces intente imprimir el valor de un elemento del array. ¿El programa corre?, ¿Que pasa cuando hace uso de ```valgrind```?
+> Código del ejercicio:
+```
+int main() {
+    int *data = (int*)malloc(100*sizeof(int));
+    data[100] = 0;
+    return 0;
+}
+```
+**¿Qué pasa cuando este programa se ejecuta?**
+> No sale ningun mensaje
+**¿Qué pasa cuando se corre el programa usando ```valgrind```?**
+> ![alt tag](https://github.com/cristianmarind/memory-api/blob/master/Punto5.png)
+> Valgrind muestra un mensaje diciendo que se escribió en un espacio no permitido y que se esta perdiendo 400 bytes en el programa
 
-7. Ahora pase un **funny value** para liberar (e.g. un puntero en la mitad del array que usted ha asignado) ¿Qué pasa?, ¿Ústed necesita herramientas para encontrar este tipo de problemas?
+6. Codifique un programa que asigne un array de enteros (como arriba), luego lo libere, y entonces intente imprimir el valor de un elemento del array.
+> Código del ejercicio:
+```
+int main() {
+    int *data = (int*)malloc(100*sizeof(int));
+    free(data);
+    printf("%i", data[5]);
+    return 0;
+}
+```
+**¿El programa corre?**
+> Si
+**¿Que pasa cuando hace uso de ```valgrind```?**
+> ![alt tag](https://github.com/cristianmarind/memory-api/blob/master/Punto6.png)
+> Valgrind muestra un mensaje diciendo que se ocurrio una lectura de memoria invalida.
 
-8. Intente usar alguna de las otras interfaces para asignacion de memoria. Por ejemplo, cree una estructura de datos simple similar a un vector y que use rutinas que usen realloc para manejar el vector. Use un array para almacenar los elementos del vector; cuando un usuario agregue una entrada al vector, use realloc para asignar un espacio mas a este. ¿Que tan bien funciona el vector asi?, ¿Como se compara con una lista enlazada?, utilice ```valgrind``` para ayudarse en la busqueda de errores.
+7. Ahora pase un **funny value** para liberar (e.g. un puntero en la mitad del array que usted ha asignado)
+> Código del ejercicio:
+```
+int main() {
+    int *data = (int*)malloc(100*sizeof(int));
+    int *x = &data[5];
+    free(x);
+    free(data);
+    return 0;
+}
+```
+> Img 
+> ![alt tag](https://github.com/cristianmarind/memory-api/blob/master/Punto7.png)
+**¿Qué pasa?**
+> Ocurren un error en consola.
+**¿Ústed necesita herramientas para encontrar este tipo de problemas?**
+Si, pues el mensaje por defecto no dice mucho, con la ayuda de Valgrind nos podemos dar cuenta que tipo de error cometimos, en este caso un free() invalido.
+
+8. Intente usar alguna de las otras interfaces para asignacion de memoria. Por ejemplo, cree una estructura de datos simple similar a un vector y que use rutinas que usen realloc para manejar el vector. Use un array para almacenar los elementos del vector; cuando un usuario agregue una entrada al vector, use realloc para asignar un espacio mas a este. Utilice ```valgrind``` para ayudarse en la busqueda de errores.
+> Código del ejercicio:
+```
+typedef struct
+{
+    int *length;
+    int *data;
+} array;
+
+void addElement(array arr, int newValue);
+
+int main() {
+    int nums [4] = {2, 5, 6, 9};
+    array x = {
+        (int*)malloc(sizeof(int)),
+        (int*)malloc(0*sizeof(int))
+    };
+    printf("-----------Vector estatico inicial-----------\n");
+    for (int i = 0; i < 4; i++)
+    {
+        printf("%i \n", nums[i]);
+    }
+    printf("-----------Construccion de la nueva estructura-----------\n");
+    printf("Size array= %i \n\n", x.length[0]);
+    for (int i = 0; i < 4; i++)
+    {
+        printf("Agregando: %i \n", nums[i]);
+        addElement(x, nums[i]);
+        printf("Size array= %i \n\n", x.length[0]);
+    }
+    printf("-----------Nueva estructura dinamica-----------\n");
+    for (int i = 0; i < 4; i++)
+    {
+        printf("%i \n", x.data[i]);
+    }
+    return 0;
+}
+
+void addElement(array arr, int newValue){
+    arr.data = (int*)realloc(arr.data, sizeof(arr.data) + sizeof(int));
+    arr.data[*arr.length] = newValue;
+    arr.length[0]++;
+}
+```
+> Img 
+> ![alt tag](https://github.com/cristianmarind/memory-api/blob/master/Punto8.png)
+**¿Que tan bien funciona el vector asi?, ¿Como se compara con una lista enlazada?**
+> Tiene ventajas y desventajas en comparacion con una lista enlazada pues:
+- Reduce el uso de memoria pues no se cuenta con registros ligas.
+- Aumenta el uso de CPU a la hora de realizar operaciones en la estructura.
+- Seria una muy buena pila.
 
 9. Gaste mas tiempo y lea sobre el uso de gdb y valgrind. Conocer estas herramientas es critico; gaste el tiempo y aprenda como volverse un experto debugger en UNIX y C enviroment.
 
